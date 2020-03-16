@@ -1,15 +1,23 @@
 'use strict'
-const express = require('express')
-const app = express()
-const {WebClient} = require('@slack/web-api')
-const SLACK_TOKEN = 'xoxb-642122684338-989291581235-ivj5j7rtl0zNnuNEREGRlTZo'
-const bodyParser = require('body-parser')
-const web = new WebClient(SLACK_TOKEN)
-const routes = require('./network/index')
-const slack = routes(web)
+const express     = require('express')
+const app         = express()
+
+const { PORT } = require('./config')
+const bodyParser  = require('body-parser')
+
+const routes      = require('./network/index')
+
 // parse application/json
 app.use(bodyParser.json())
 
-app.use('/api-slack',slack)
+app.use('/api-slack',routes)
 
-app.listen(4000,() => console.log('Service On SLACK API'))
+app.listen(PORT,() => console.log('Service On SLACK API'))
+
+/**
+ * POST
+ * {
+        "channel":"UJW3LL5H8",
+        "message":"Hola desde la API"
+ *  }
+ */
